@@ -1,4 +1,4 @@
-package com.dicoding.nusatalaapp.ui.theme
+package com.dicoding.nusatalaapp.presentation.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

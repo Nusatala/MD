@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Nusatala App</string>
+
+<!--    onboarding 1-->
+    <string name="ob_title1">Belajar Alat Musik Tradisional Indonesia Lebih Mudah</string>
+    <string name="ob_desc1">Fitur scan gambar yang dilengkapi dengan informasi relevan hasil scan memudahkan Anda dalam belajar</string>
+<!--    onboardding 2-->
+    <string name="ob_title2">Rekomendasi Tempat Belajar dan Kuis Seru</string>
+    <string name="ob_desc2">Rekomendasi komunitas seni dan kuis edukasi yang menyenangkan dapat membantu mengakselerasi progres belajar Anda</string>
+<!--    onboarding 3-->
+    <string name="ob_title3">Tempat Belanja Alat Musik Tradisional Terpercaya</string>
+    <string name="ob_desc3">Rekomendasi tempat belanja alat musik tradisional akan memudahkan Anda dalam memilih penjual yang terpercaya</string>
 </resources>

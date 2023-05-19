@@ -1,4 +1,4 @@
-package com.dicoding.nusatalaapp
+package com.dicoding.nusatalaapp.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.dicoding.nusatalaapp.ui.theme.NusatalaAppTheme
+import com.dicoding.nusatalaapp.presentation.ui.theme.NusatalaAppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,26 +18,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             NusatalaAppTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
-                }
+                NusatalaApp()
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    NusatalaAppTheme {
-        Greeting("Android")
     }
 }
