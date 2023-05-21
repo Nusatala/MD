@@ -11,4 +11,8 @@
     <string name="ob_title3">Tempat Belanja Alat Musik Tradisional Terpercaya</string>
     <string name="ob_desc3">Rekomendasi tempat belanja alat musik tradisional akan memudahkan Anda dalam memilih penjual yang terpercaya</string>
     <string name="start_btn_text">Mulai</string>
+    <string name="placeholder_enter_email">Masukan email</string>
+    <string name="placeholder_enter_password">Masukan password</string>
+    <string name="placeholder_enter_fullname">Masukan nama lengkap</string>
+    <string name="placeholder_enter_password_confirmation">Masukkan ulang password</string>
 </resources>

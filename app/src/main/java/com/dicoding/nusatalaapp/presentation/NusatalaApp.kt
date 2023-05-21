@@ -12,15 +12,19 @@ import androidx.navigation.compose.rememberNavController
 import com.dicoding.nusatalaapp.presentation.navigation.Screen
 import com.dicoding.nusatalaapp.presentation.splash.SplashScreen
 import com.dicoding.nusatalaapp.presentation.splash.onboarding.WelcomeScreen
+import com.dicoding.nusatalaapp.presentation.ui.auth.login.LoginScreen
+import com.dicoding.nusatalaapp.presentation.ui.auth.register.RegisterScreen
 
 @Composable
 fun NusatalaApp(
-    modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
 ) {
-    NavHost(navController = navController, startDestination = Screen.Splash.route) {
+    NavHost(
+        navController = navController,
+        startDestination = Screen.Splash.route
+    ) {
         composable(route = Screen.Welcome.route) {
-            WelcomeScreen()
+            WelcomeScreen(navController = navController)
         }
 
         composable(route = Screen.Home.route) {
@@ -28,7 +32,15 @@ fun NusatalaApp(
         }
 
         composable(route = Screen.Splash.route) {
-            SplashScreen(navController)
+            SplashScreen(navController = navController)
+        }
+
+        composable(route = Screen.Login.route) {
+            LoginScreen(navController = navController)
+        }
+
+        composable(route = Screen.Register.route) {
+            RegisterScreen()
         }
     }
 }
