@@ -20,17 +20,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.dicoding.nusatalaapp.R
+import com.dicoding.nusatalaapp.presentation.navigation.Screen
 import com.dicoding.nusatalaapp.presentation.ui.components.ButtonBase
 import com.dicoding.nusatalaapp.presentation.ui.components.FieldWithLabel
-import com.dicoding.nusatalaapp.presentation.ui.components.TextFieldBase
 import com.dicoding.nusatalaapp.presentation.ui.components.TextOnLine
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun RegisterScreen(
+    navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
     val systemUiController = rememberSystemUiController()
@@ -136,7 +137,9 @@ fun RegisterScreen(
             ButtonBase(
                 text = "Sign Up",
                 modifier = modifier,
-                onClick = {}
+                onClick = {
+                    navController.navigate(Screen.Articles.route)
+                }
             )
             Row {
                 Text(text = "Sudah punya akun?")
