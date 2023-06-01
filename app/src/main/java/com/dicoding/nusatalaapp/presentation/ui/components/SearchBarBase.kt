@@ -31,7 +31,6 @@ fun SearchBarBase(
             Icon(
                 Icons.Default.Search,
                 contentDescription = "Search",
-                modifier = modifier.padding(horizontal = 8.dp)
             )
         },
         singleLine = true,
@@ -41,10 +40,10 @@ fun SearchBarBase(
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
         ),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .sizeIn(minHeight = 48.dp)
-            .shadow(1.dp, shape = RoundedCornerShape(16.dp))
+            .shadow(2.dp, shape = RoundedCornerShape(16.dp))
             .clip(RoundedCornerShape(16.dp))
     )
 }

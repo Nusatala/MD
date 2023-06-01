@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.dicoding.nusatalaapp.presentation.ui.components.TopAppBarBase
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -33,17 +34,7 @@ fun DetailArticleScreen(
                 contentColor = Color.White,
                 modifier = modifier.padding(vertical = 8.dp)
             ) {
-                TopAppBar(
-                    title = { Text(text = "Detail Article") },
-                    navigationIcon = {
-                        IconButton(onClick = { }) {
-                            Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                        }
-                    },
-                    backgroundColor = Color.Transparent,
-                    contentColor = MaterialTheme.colors.primary,
-                    elevation = 0.dp
-                )
+                TopAppBarBase(title = "Detail Article", onBackClicked = {})
             }
         }
     ) {

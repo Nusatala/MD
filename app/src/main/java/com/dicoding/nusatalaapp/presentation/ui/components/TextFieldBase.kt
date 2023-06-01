@@ -38,10 +38,12 @@ fun TextFieldBase(
             Text(text = placeholder)
         },
         leadingIcon = {
-            Icon(
-                imageVector = leadingIcon ?: Icons.Filled.Warning,
-                contentDescription = "leading icon",
-            )
+            if (leadingIcon != null) {
+                Icon(
+                    imageVector = leadingIcon,
+                    contentDescription = "leading icon",
+                )
+            }
         },
         trailingIcon = {
             if (trailingIcon != null)
@@ -53,7 +55,7 @@ fun TextFieldBase(
         modifier = modifier
             .fillMaxWidth()
             .heightIn(min = 48.dp)
-            .clip(RoundedCornerShape(10.dp))
+            .clip(RoundedCornerShape(12.dp))
     )
 }
 
