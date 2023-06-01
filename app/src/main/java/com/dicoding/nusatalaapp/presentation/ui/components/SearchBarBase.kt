@@ -43,7 +43,7 @@ fun SearchBarBase(
         modifier = modifier
             .fillMaxWidth()
             .sizeIn(minHeight = 48.dp)
-            .shadow(1.dp, shape = RoundedCornerShape(16.dp))
+            .shadow(2.dp, shape = RoundedCornerShape(16.dp))
             .clip(RoundedCornerShape(16.dp))
     )
 }

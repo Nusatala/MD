@@ -132,7 +132,8 @@ fun ArticleScreen(
     ) {
         LazyColumn(
             contentPadding = PaddingValues(vertical = 12.dp, horizontal = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = modifier.padding(bottom = 56.dp)
         ) {
             items(articles, key = { it.id }) {
                 ArticleCardItem(

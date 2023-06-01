@@ -1,5 +1,6 @@
 package com.dicoding.nusatalaapp.presentation.ui.components
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
@@ -19,19 +20,21 @@ fun FieldWithLabel(
     leadingIcon: ImageVector? = null,
     trailingIcon: ImageVector? = null,
 ) {
-    Text(
-        text = label,
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        textAlign = TextAlign.Start,
-    )
-    TextFieldBase(
-        value = value,
-        onValueChanged = onValueChanged,
-        modifier = modifier.fillMaxWidth(),
-        placeholder = placeholder,
-        leadingIcon = leadingIcon,
-        trailingIcon = trailingIcon,
-    )
+    Column {
+        Text(
+            text = label,
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
+            textAlign = TextAlign.Start,
+        )
+        TextFieldBase(
+            value = value,
+            onValueChanged = onValueChanged,
+            modifier = modifier.fillMaxWidth(),
+            placeholder = placeholder,
+            leadingIcon = leadingIcon,
+            trailingIcon = trailingIcon,
+        )
+    }
 }

@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -17,11 +18,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.dicoding.nusatalaapp.presentation.account.AccountScreen
+import com.dicoding.nusatalaapp.presentation.account.EditAccountScreen
 import com.dicoding.nusatalaapp.presentation.article.ArticleScreen
 import com.dicoding.nusatalaapp.presentation.article.DetailArticleScreen
+import com.dicoding.nusatalaapp.presentation.faq.FaqScreen
 import com.dicoding.nusatalaapp.presentation.home.HomeScreen
 import com.dicoding.nusatalaapp.presentation.navigation.NavigationItem
 import com.dicoding.nusatalaapp.presentation.navigation.Screen
+import com.dicoding.nusatalaapp.presentation.setting.SettingScreen
 import com.dicoding.nusatalaapp.presentation.splash.SplashScreen
 import com.dicoding.nusatalaapp.presentation.splash.onboarding.WelcomeScreen
 import com.dicoding.nusatalaapp.presentation.ui.auth.login.LoginScreen
@@ -39,7 +44,7 @@ fun NusatalaApp(
     ) {
         NavHost(
             navController = navController,
-            startDestination = Screen.Articles.route
+            startDestination = Screen.Faq.route
         ) {
             composable(route = Screen.Welcome.route) {
                 WelcomeScreen(navController = navController)
@@ -92,7 +97,27 @@ fun NusatalaApp(
             }
 
             composable(route = Screen.Account.route) {
-                Text(text = Screen.Account.route)
+                AccountScreen(
+                    imageUrl = "https://assets.ayobandung.com/crop/0x0:0x0/750x500/webp/photo/2022/10/15/3563646264.png",
+                    name = "Dokter tirta",
+                    email = "emailanjas@mail.com"
+                )
+            }
+
+            composable(route = Screen.DetailAccount.route) {
+                EditAccountScreen(
+                    imageUrl = "https://assets.ayobandung.com/crop/0x0:0x0/750x500/webp/photo/2022/10/15/3563646264.png",
+                    name = "Dokter tirta",
+                    email = "emailanjas@mail.com"
+                )
+            }
+
+            composable(route = Screen.Setting.route) {
+                SettingScreen()
+            }
+
+            composable(route = Screen.Faq.route) {
+                FaqScreen()
             }
         }
     }
@@ -103,7 +128,9 @@ fun BottomNav(
     navController: NavHostController,
     modifier: Modifier = Modifier,
 ) {
-    BottomNavigation(modifier = modifier) {
+    BottomNavigation(
+        modifier = modifier,
+    ) {
         val navBackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackEntry?.destination?.route
 
@@ -135,7 +162,7 @@ fun BottomNav(
             )
         )
 
-        BottomNavigation() {
+        BottomNavigation(backgroundColor = MaterialTheme.colors.background) {
             navigationItem.map { item ->
                 BottomNavigationItem(
                     icon = {
@@ -154,7 +181,9 @@ fun BottomNav(
                             restoreState = true
                             launchSingleTop = true
                         }
-                    }
+                    },
+                    selectedContentColor = MaterialTheme.colors.primary,
+                    unselectedContentColor = Color.Gray
                 )
             }
         }
