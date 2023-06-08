@@ -25,7 +25,6 @@ import com.dicoding.nusatalaapp.presentation.ui.components.TopAppBarBase
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun FaqScreen(
-    modifier: Modifier = Modifier,
 ) {
     val faqs = listOf(
         Faq(
@@ -51,26 +50,26 @@ fun FaqScreen(
     )
 
     Scaffold(
-        modifier = modifier,
+        modifier = Modifier,
         topBar = {
             TopAppBarBase(title = "Frequently Asked Question", onBackClicked = {})
         },
     ) {
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 12.dp, vertical = 16.dp),
+                .padding(vertical = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Box(
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.faq),
                     contentDescription = "faq",
-                    modifier = modifier
+                    modifier = Modifier
                         .size(128.dp),
                 )
             }
@@ -103,6 +102,7 @@ fun FaqCardItem(
     ) {
         Column(
             modifier = Modifier
+                .fillMaxWidth()
                 .clickable { }
                 .padding(vertical = 16.dp, horizontal = 12.dp)
         ) {

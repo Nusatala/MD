@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.dicoding.nusatalaapp.R
 import com.dicoding.nusatalaapp.presentation.navigation.Screen
@@ -27,6 +28,7 @@ import com.google.accompanist.pager.HorizontalPagerIndicator
 fun WelcomeScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
+    welcomeViewModel: WelcomeViewModel = hiltViewModel()
 ) {
     val onBoardingPages = listOf(
         OnBoardingPage.First,
@@ -80,6 +82,7 @@ fun WelcomeScreen(
                         .padding(horizontal = 16.dp),
                     shape = RoundedCornerShape(10.dp),
                     onClick = {
+                        welcomeViewModel.saveOnBoardingState(true)
                         navController.popBackStack()
                         navController.navigate(Screen.Login.route)
                     },

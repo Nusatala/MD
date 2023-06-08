@@ -1,4 +1,4 @@
-package com.dicoding.nusatalaapp.presentation.ui.auth.login
+package com.dicoding.nusatalaapp.presentation.auth.register
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -11,6 +11,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,7 +20,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.dicoding.nusatalaapp.R
@@ -30,9 +30,9 @@ import com.dicoding.nusatalaapp.presentation.ui.components.TextOnLine
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
-fun LoginScreen(
-    modifier: Modifier = Modifier,
+fun RegisterScreen(
     navController: NavHostController,
+    modifier: Modifier = Modifier
 ) {
     val systemUiController = rememberSystemUiController()
     systemUiController.setStatusBarColor(color = MaterialTheme.colors.primary)
@@ -40,7 +40,6 @@ fun LoginScreen(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colors.primary),
-
     ) {
         Box(
             modifier = modifier
@@ -52,7 +51,7 @@ fun LoginScreen(
                 style = MaterialTheme.typography.h4,
                 color = MaterialTheme.colors.onPrimary,
                 fontWeight = FontWeight.Bold,
-                text = "Login"
+                text = "Register"
             )
         }
         Column(
@@ -68,7 +67,13 @@ fun LoginScreen(
             var email by remember {
                 mutableStateOf("")
             }
+            var fullName by remember {
+                mutableStateOf("")
+            }
             var password by remember {
+                mutableStateOf("")
+            }
+            var passwordConfirmation by remember {
                 mutableStateOf("")
             }
             FieldWithLabel(
@@ -78,7 +83,24 @@ fun LoginScreen(
                     email = it
                 },
                 placeholder = stringResource(R.string.placeholder_enter_email),
-                leadingIcon = Icons.Filled.Email,
+                leadingIcon = {},
+                trailingIcon = {},
+                modifier = modifier,
+            )
+            Spacer(
+                modifier = modifier.size(
+                    16.dp
+                )
+            )
+            FieldWithLabel(
+                label = "Nama Lengkap",
+                value = fullName,
+                onValueChanged  = {
+                    fullName = it
+                },
+                placeholder = stringResource(R.string.placeholder_enter_fullname),
+                leadingIcon = {  },
+                trailingIcon = {},
                 modifier = modifier,
             )
             Spacer(
@@ -93,29 +115,38 @@ fun LoginScreen(
                     password = it
                 },
                 placeholder = stringResource(R.string.placeholder_enter_password),
-                leadingIcon = Icons.Filled.Lock,
-                trailingIcon = Icons.Filled.Visibility,
+                leadingIcon = {},
+                trailingIcon = {},
                 modifier = modifier,
             )
-            Text(
-                text = "Lupa password?",
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 12.dp),
-                textAlign = TextAlign.End,
-                color = MaterialTheme.colors.primaryVariant
+            Spacer(
+                modifier = modifier.size(
+                    16.dp
+                )
             )
+            FieldWithLabel(
+                label = "Konfirmasi Password",
+                value = passwordConfirmation,
+                onValueChanged  = {
+                    passwordConfirmation = it
+                },
+                placeholder = stringResource(R.string.placeholder_enter_password_confirmation),
+                leadingIcon = {},
+                trailingIcon = {},
+                modifier = modifier,
+            )
+
             ButtonBase(
-                text = "Login",
+                text = "Sign Up",
                 modifier = modifier,
                 onClick = {
-                    navController.navigate(Screen.Register.route)
+                    navController.navigate(Screen.Articles.route)
                 }
             )
             Row {
-                Text(text = "Belum punya akun?")
+                Text(text = "Sudah punya akun?")
                 Spacer(modifier = modifier.size(4.dp))
-                Text(text = "Sign up", color = MaterialTheme.colors.primaryVariant)
+                Text(text = "Sign In", color = MaterialTheme.colors.primaryVariant)
             }
             TextOnLine(
                 text = "atau login dengan",

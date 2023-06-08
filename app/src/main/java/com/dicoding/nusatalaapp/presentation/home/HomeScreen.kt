@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,6 +25,7 @@ import com.dicoding.nusatalaapp.presentation.ui.components.ArticleCardItem
 import com.dicoding.nusatalaapp.presentation.ui.components.SearchBarBase
 import com.dicoding.nusatalaapp.presentation.ui.components.TopFiveArticleCard
 import com.dicoding.nusatalaapp.presentation.ui.theme.InfoTypography
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -103,6 +105,9 @@ fun HomeScreen(
         )
     )
 
+    val systemUiController = rememberSystemUiController()
+    systemUiController.setStatusBarColor(color = MaterialTheme.colors.primary)
+
     Scaffold(
         modifier = modifier.fillMaxSize()
     ) {
@@ -158,9 +163,9 @@ fun HomeScreen(
                         .offset(y = (-25).dp)
                         .padding(horizontal = 24.dp)
                 )
-                Text(text = "Untuk Kamu", modifier = modifier.padding(horizontal = 12.dp))
+                Text(text = "Untuk Kamu", modifier = modifier.padding(horizontal = 16.dp))
                 LazyRow(
-                    contentPadding = PaddingValues(12.dp),
+                    contentPadding = PaddingValues(16.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(articles, key = { it.id }) {
@@ -175,7 +180,7 @@ fun HomeScreen(
                 Row(
                     modifier = modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 12.dp),
+                        .padding(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
@@ -183,7 +188,7 @@ fun HomeScreen(
                     SmallButtonBase(text = "Show more", onClick = {})
                 }
                 LazyColumn(
-                    contentPadding = PaddingValues(12.dp),
+                    contentPadding = PaddingValues(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = modifier.padding(bottom = 56.dp)
                 ) {
