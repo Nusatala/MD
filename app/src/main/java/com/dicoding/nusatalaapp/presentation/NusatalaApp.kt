@@ -26,25 +26,38 @@ import com.dicoding.nusatalaapp.presentation.faq.FaqScreen
 import com.dicoding.nusatalaapp.presentation.home.HomeScreen
 import com.dicoding.nusatalaapp.presentation.navigation.NavigationItem
 import com.dicoding.nusatalaapp.presentation.navigation.Screen
+import com.dicoding.nusatalaapp.presentation.quiz.QuizDetailScreen
+import com.dicoding.nusatalaapp.presentation.quiz.QuizScreen
 import com.dicoding.nusatalaapp.presentation.setting.SettingScreen
 import com.dicoding.nusatalaapp.presentation.splash.SplashScreen
 import com.dicoding.nusatalaapp.presentation.splash.onboarding.WelcomeScreen
-import com.dicoding.nusatalaapp.presentation.ui.auth.login.LoginScreen
-import com.dicoding.nusatalaapp.presentation.ui.auth.register.RegisterScreen
+import com.dicoding.nusatalaapp.presentation.auth.login.LoginScreen
+import com.dicoding.nusatalaapp.presentation.auth.register.RegisterScreen
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun NusatalaApp(
     navController: NavHostController = rememberNavController(),
 ) {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
     Scaffold(
         bottomBar = {
-            BottomNav(navController = navController)
+            if (currentRoute !in listOf(
+                    Screen.Splash.route,
+                    Screen.Welcome.route,
+                    Screen.Login.route,
+                    Screen.Register.route,
+                    Screen.Article.route
+            )) {
+                BottomNav(navController = navController)
+            }
         }
     ) {
         NavHost(
             navController = navController,
-            startDestination = Screen.Faq.route
+            startDestination = Screen.Splash.route
         ) {
             composable(route = Screen.Welcome.route) {
                 WelcomeScreen(navController = navController)
@@ -93,7 +106,7 @@ fun NusatalaApp(
             }
 
             composable(route = Screen.Quiz.route) {
-                Text(text = Screen.Quiz.route)
+                QuizScreen()
             }
 
             composable(route = Screen.Account.route) {
@@ -118,6 +131,23 @@ fun NusatalaApp(
 
             composable(route = Screen.Faq.route) {
                 FaqScreen()
+            }
+
+            composable(
+                route = Screen.DetailQuiz.route,
+                arguments = listOf(navArgument("levelId") {
+                    type = NavType.LongType
+                })
+            ) {
+                QuizDetailScreen(
+                    id = 1,
+                    image = "https://i.pinimg.com/originals/d2/c9/8b/d2c98ba25bcee2d39f7494e9dc95cdbb.jpg",
+                    question = "Afakah kamu adalah anime?",
+                    firstAnswer = "iyah bang",
+                    secondAnswer = "iyahhh aoke",
+                    thirdAnswer = "kayaknya iyah",
+                    forthAnswer = "tolong ya",
+                )
             }
         }
     }

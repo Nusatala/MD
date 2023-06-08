@@ -7,6 +7,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
@@ -17,13 +19,16 @@ fun FieldWithLabel(
     onValueChanged: (String) -> Unit,
     placeholder: String,
     modifier: Modifier = Modifier,
-    leadingIcon: ImageVector? = null,
-    trailingIcon: ImageVector? = null,
+    leadingIcon: @Composable () -> Unit,
+    trailingIcon: @Composable () -> Unit,
+    singleLine: Boolean = false,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
     Column {
         Text(
             text = label,
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 4.dp),
             textAlign = TextAlign.Start,
@@ -35,6 +40,9 @@ fun FieldWithLabel(
             placeholder = placeholder,
             leadingIcon = leadingIcon,
             trailingIcon = trailingIcon,
+            singleLine = singleLine,
+            keyboardType = keyboardType,
+            visualTransformation = visualTransformation,
         )
     }
 }
