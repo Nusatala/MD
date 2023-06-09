@@ -1,5 +1,6 @@
 package com.dicoding.nusatalaapp.data.remote.dto
 
+import com.dicoding.nusatalaapp.domain.model.User
 import com.google.gson.annotations.SerializedName
 
 data class UserDTO(
@@ -33,3 +34,14 @@ data class UserDTO(
 
 	val token: String? = null
 )
+
+fun UserDTO.toModel(): User {
+	return User(
+		id = id,
+		username = username,
+		email = email,
+		name = name,
+		photo = photo,
+		token = token
+	)
+}

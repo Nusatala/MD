@@ -1,5 +1,6 @@
 package com.dicoding.nusatalaapp.presentation.auth.login
 
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,6 +24,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import com.dicoding.nusatalaapp.R
 import com.dicoding.nusatalaapp.presentation.navigation.Screen
@@ -30,23 +33,26 @@ import com.dicoding.nusatalaapp.presentation.ui.components.ButtonBase
 import com.dicoding.nusatalaapp.presentation.ui.components.FieldWithLabel
 import com.dicoding.nusatalaapp.presentation.ui.components.TextOnLine
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
+    viewModel: LoginViewModel = hiltViewModel(),
 ) {
     val systemUiController = rememberSystemUiController()
     systemUiController.setStatusBarColor(color = MaterialTheme.colors.primary)
 
-    var email by remember {
+    var username by remember {
         mutableStateOf("")
     }
     var password by remember {
         mutableStateOf("")
     }
 
-    var emailFocusState by remember {
+    var usernameFocusState by remember {
         mutableStateOf(false)
     }
 
@@ -88,28 +94,28 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             FieldWithLabel(
-                label = "Email",
-                value = email,
+                label = "Username",
+                value = username,
                 onValueChanged = {
-                    email = it
+                    username = it
                 },
                 placeholder = stringResource(R.string.placeholder_enter_email),
                 leadingIcon = {
                     Icon(
-                        imageVector = Icons.Default.Mail,
-                        contentDescription = "email",
-                        tint = if (emailFocusState) MaterialTheme.colors.primary else Color.Gray
+                        imageVector = Icons.Default.Person,
+                        contentDescription = "username",
+                        tint = if (usernameFocusState) MaterialTheme.colors.primary else Color.Gray
                     )
                 },
                 trailingIcon = {},
                 modifier = Modifier
                     .border(
                         1.dp,
-                        color = if (emailFocusState) MaterialTheme.colors.primary else Color.Gray,
+                        color = if (usernameFocusState) MaterialTheme.colors.primary else Color.Gray,
                         shape = RoundedCornerShape(12.dp)
                     )
                     .onFocusChanged {
-                        emailFocusState = it.isFocused
+                        usernameFocusState = it.isFocused
                     },
                 singleLine = true,
                 keyboardType = KeyboardType.Email
@@ -168,7 +174,15 @@ fun LoginScreen(
                 text = "Login",
                 modifier = modifier,
                 onClick = {
+                    viewModel.login(username, password)
+                    Log.d("userLogin", "after exec login")
 
+                    viewModel.state.onEach { authState ->
+                        if (authState.user.id != null) {
+                            navController.popBackStack()
+                            navController.navigate(Screen.Home.route)
+                        }
+                    }.launchIn(viewModel.viewModelScope)
                 }
             )
             Row {

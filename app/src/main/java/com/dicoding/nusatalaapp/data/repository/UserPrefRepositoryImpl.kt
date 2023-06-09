@@ -1,17 +1,14 @@
 package com.dicoding.nusatalaapp.data.repository
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import com.dicoding.nusatalaapp.domain.model.User
 import com.dicoding.nusatalaapp.domain.repository.UserPrefRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 
@@ -24,7 +21,14 @@ class UserPrefRepositoryImpl(
     private val dataStore = context.dataStore
 
     override suspend fun saveUserSession(userModel: User) {
-
+        dataStore.edit { pref ->
+            pref[idKey] = userModel.id!!
+            pref[tokenKey] = userModel.token.toString()
+            pref[nameKey] = userModel.name.toString()
+            pref[photoKey] = userModel.photo.toString()
+            pref[usernameKey] = userModel.username.toString()
+            pref[emailKey] = userModel.email.toString()
+        }
     }
 
     override suspend fun saveOnBoardingState(state: Boolean) {
@@ -49,7 +53,28 @@ class UserPrefRepositoryImpl(
     }
 
     override fun readUserSession(): Flow<User> {
-        return flowOf(User(1))
+
+        Log.d("userLogin", "usr session save repos exec")
+        return dataStore.data
+            .catch { e ->
+                if (e is IOException) {
+                    emit(emptyPreferences())
+                } else {
+                    throw e
+                }
+            }
+            .map { pref ->
+                val savedUser = User(
+                    id = pref[idKey],
+                    username = pref[usernameKey],
+                    email = pref[emailKey],
+                    name = pref[nameKey],
+                    photo = pref[photoKey],
+                    token = pref[tokenKey],
+                )
+
+                savedUser
+            }
     }
 
     override suspend fun destroyUserSession(): Boolean {
@@ -58,5 +83,11 @@ class UserPrefRepositoryImpl(
 
     companion object {
         val onBoardingKey = booleanPreferencesKey(name = "on_boarding_done")
+        val tokenKey = stringPreferencesKey(name = "token")
+        val nameKey = stringPreferencesKey(name = "name")
+        val photoKey = stringPreferencesKey(name = "photo")
+        val idKey = intPreferencesKey(name = "id")
+        val usernameKey = stringPreferencesKey(name = "username")
+        val emailKey = stringPreferencesKey(name = "email")
     }
 }

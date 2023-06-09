@@ -21,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.dicoding.nusatalaapp.R
 import com.dicoding.nusatalaapp.presentation.navigation.Screen
@@ -32,7 +33,8 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 @Composable
 fun RegisterScreen(
     navController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: RegisterViewModel = hiltViewModel(),
 ) {
     val systemUiController = rememberSystemUiController()
     systemUiController.setStatusBarColor(color = MaterialTheme.colors.primary)
@@ -135,7 +137,6 @@ fun RegisterScreen(
                 trailingIcon = {},
                 modifier = modifier,
             )
-
             ButtonBase(
                 text = "Sign Up",
                 modifier = modifier,
