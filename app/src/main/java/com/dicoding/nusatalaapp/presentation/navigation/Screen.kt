@@ -8,7 +8,7 @@ sealed class Screen(val route: String) {
     object Register : Screen("register")
     object Articles : Screen("articles")
     object Article : Screen("articles/{articleId}") {
-        fun createRoute(id: Long) = "articles/$id"
+        fun createRoute(id: Int) = "articles/$id"
     }
     object Cart : Screen("cart")
     object Camera : Screen("camera")

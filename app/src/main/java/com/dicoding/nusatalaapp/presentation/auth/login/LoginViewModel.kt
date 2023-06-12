@@ -32,7 +32,6 @@ class LoginViewModel @Inject constructor(
             loginUseCase(username, password).collect { result ->
                 when (result) {
                     is Result.Loading -> {
-                        Log.d("userLogin", "loading")
                         _state.value = AuthState(isLoading = true)
                     }
                     is Result.Success -> {
@@ -40,11 +39,9 @@ class LoginViewModel @Inject constructor(
                         viewModelScope.launch {
                             saveUserSessionUseCase(userModel = result.data)
                         }
-                        Log.d("userLogin", result.data.toString())
                     }
                     is Result.Error -> {
                         _state.value = AuthState(isLoading = false, error = result.error)
-                        Log.d("userLogin", result.error)
                     }
                 }
             }

@@ -1,6 +1,5 @@
 package com.dicoding.nusatalaapp.data.repository
 
-import android.util.Log
 import com.dicoding.nusatalaapp.common.Result
 import com.dicoding.nusatalaapp.data.remote.ApiService
 import com.dicoding.nusatalaapp.data.remote.dto.toModel
@@ -8,6 +7,7 @@ import com.dicoding.nusatalaapp.domain.model.User
 import com.dicoding.nusatalaapp.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import retrofit2.HttpException
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
@@ -18,9 +18,8 @@ class AuthRepositoryImpl @Inject constructor(
             emit(Result.Loading)
             val response = apiService.login(username, password).toModel()
             emit(Result.Success(data = response))
-        } catch (exception: Exception) {
+        } catch (exception: HttpException) {
             emit(Result.Error("Invalid Credentilas"))
-            Log.d("userLogin", exception.message.toString())
         }
     }
 
@@ -32,10 +31,10 @@ class AuthRepositoryImpl @Inject constructor(
     ): Flow<Result<User>> = flow {
         try {
             emit(Result.Loading)
-            val response = apiService.register(name, username, email, password, "test.png").toModel()
+            val response = apiService.register(name, username, email, password).toModel()
             emit(Result.Success(response))
         } catch (exception: Exception) {
-            emit(Result.Error(exception.message.toString()))
+            emit(Result.Error("The email or username you use already exist"))
         }
     }
 }

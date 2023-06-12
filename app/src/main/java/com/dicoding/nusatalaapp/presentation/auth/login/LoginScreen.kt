@@ -1,6 +1,7 @@
 package com.dicoding.nusatalaapp.presentation.auth.login
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,13 +10,18 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.RemoveRedEye
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -45,9 +51,12 @@ fun LoginScreen(
     val systemUiController = rememberSystemUiController()
     systemUiController.setStatusBarColor(color = MaterialTheme.colors.primary)
 
+    val context = LocalContext.current
+
     var username by remember {
         mutableStateOf("")
     }
+
     var password by remember {
         mutableStateOf("")
     }
@@ -62,6 +71,37 @@ fun LoginScreen(
 
     var isPasswordVisible by remember {
         mutableStateOf(true)
+    }
+
+    var isLoading by remember {
+        mutableStateOf(false)
+    }
+
+    var usernameError by remember {
+        mutableStateOf("")
+    }
+    var passwordError by remember {
+        mutableStateOf("")
+    }
+
+    var toastExecuted by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    fun isValid(): Boolean {
+        var isValid = true
+
+        if (username.isBlank()) {
+            usernameError = "Username harus diisi"
+            isValid = false
+        }
+
+        if (password.isBlank()) {
+            passwordError = "Password harus diisi"
+            isValid = false
+        }
+
+        return isValid
     }
 
     Column(
@@ -98,27 +138,29 @@ fun LoginScreen(
                 value = username,
                 onValueChanged = {
                     username = it
+                    usernameError = ""
                 },
-                placeholder = stringResource(R.string.placeholder_enter_email),
+                placeholder = stringResource(R.string.place_holder_input_username),
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Person,
                         contentDescription = "username",
-                        tint = if (usernameFocusState) MaterialTheme.colors.primary else Color.Gray
+                        tint = if (usernameFocusState) MaterialTheme.colors.primary else if (usernameError.isNotBlank()) Color.Red else Color.Gray
                     )
                 },
                 trailingIcon = {},
                 modifier = Modifier
                     .border(
                         1.dp,
-                        color = if (usernameFocusState) MaterialTheme.colors.primary else Color.Gray,
+                        color = if (usernameFocusState) MaterialTheme.colors.primary else if (usernameError.isNotBlank()) Color.Red else Color.Gray,
                         shape = RoundedCornerShape(12.dp)
                     )
                     .onFocusChanged {
                         usernameFocusState = it.isFocused
                     },
                 singleLine = true,
-                keyboardType = KeyboardType.Email
+                isError = usernameError.isNotBlank(),
+                errorMessage = usernameError
             )
             Spacer(
                 modifier = modifier.size(
@@ -130,13 +172,14 @@ fun LoginScreen(
                 value = password,
                 onValueChanged = {
                     password = it
+                    passwordError = ""
                 },
                 placeholder = stringResource(R.string.placeholder_enter_password),
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Filled.Lock,
                         contentDescription = "password",
-                        tint = if (passwordFocusState) MaterialTheme.colors.primary else Color.Gray
+                        tint = if (passwordFocusState) MaterialTheme.colors.primary else if (passwordError.isNotBlank()) Color.Red else Color.Gray
                     )
                 },
                 trailingIcon = {
@@ -152,7 +195,7 @@ fun LoginScreen(
                 modifier = Modifier
                     .border(
                         1.dp,
-                        color = if (passwordFocusState) MaterialTheme.colors.primary else Color.Gray,
+                        color = if (passwordFocusState) MaterialTheme.colors.primary else if (passwordError.isNotBlank()) Color.Red else Color.Gray,
                         shape = RoundedCornerShape(12.dp)
                     )
                     .onFocusChanged {
@@ -160,7 +203,9 @@ fun LoginScreen(
                     },
                 singleLine = true,
                 keyboardType = KeyboardType.Password,
-                visualTransformation = if (isPasswordVisible) PasswordVisualTransformation() else VisualTransformation.None
+                visualTransformation = if (isPasswordVisible) PasswordVisualTransformation() else VisualTransformation.None,
+                isError = passwordError.isNotBlank(),
+                errorMessage = passwordError
             )
             Text(
                 text = "Lupa password?",
@@ -172,19 +217,36 @@ fun LoginScreen(
             )
             ButtonBase(
                 text = "Login",
-                modifier = modifier,
+                modifier = Modifier,
+                isLoading = isLoading,
                 onClick = {
-                    viewModel.login(username, password)
-                    Log.d("userLogin", "after exec login")
-
-                    viewModel.state.onEach { authState ->
-                        if (authState.user.id != null) {
-                            navController.popBackStack()
-                            navController.navigate(Screen.Home.route)
-                        }
-                    }.launchIn(viewModel.viewModelScope)
+                    if (isValid() && !isLoading) {
+                        isLoading = true
+                        toastExecuted = false
+                        viewModel.login(username, password)
+                    }
                 }
             )
+
+            LaunchedEffect(Unit) {
+                viewModel.state.collect { authState ->
+                    if (authState.user.id != null) {
+                        isLoading = false
+                        navController.popBackStack()
+                        navController.navigate(Screen.Home.route) {
+                            launchSingleTop = true
+                        }
+                    }
+
+                    if (authState.error.isNotEmpty() && !toastExecuted) {
+                        isLoading = false
+                        toastExecuted = true
+                        Toast.makeText(context, authState.error, Toast.LENGTH_SHORT).show()
+                    }
+
+                }
+            }
+
             Row {
                 Text(text = "Belum punya akun?")
                 Spacer(modifier = modifier.size(4.dp))
@@ -206,3 +268,4 @@ fun LoginScreen(
         }
     }
 }
+
