@@ -15,4 +15,6 @@
     <string name="placeholder_enter_password">Masukan password</string>
     <string name="placeholder_enter_fullname">Masukan nama lengkap</string>
     <string name="placeholder_enter_password_confirmation">Masukkan ulang password</string>
+    <string name="placeholder_enter_username">Masukkan usernmae</string>
+    <string name="place_holder_input_username">Masukkan username</string>
 </resources>

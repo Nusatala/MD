@@ -1,9 +1,7 @@
 package com.dicoding.nusatalaapp.presentation.ui.theme
 
-import android.icu.text.CaseMap.Upper
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Typography
-import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -48,5 +46,11 @@ val InfoTypography = Typography(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Bold,
         fontSize = 18.sp,
+    ),
+    caption = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = Typography.subtitle1.fontWeight,
+        fontSize = 14.sp,
+        color = Color.Red
     )
 )

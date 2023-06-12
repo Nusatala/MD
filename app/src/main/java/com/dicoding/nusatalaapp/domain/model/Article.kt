@@ -1,9 +1,9 @@
 package com.dicoding.nusatalaapp.domain.model
 
 data class Article(
-    val id: Long,
-    val title: String,
-    val body: String,
-    val imageUrl: String,
-    val views: Int,
+    val id: Int? = null,
+    val title: String? = null,
+    val body: String? = null,
+    val imageId: Int? = null,
+    val views: Int? =  null,
 )

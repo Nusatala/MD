@@ -20,13 +20,13 @@ import coil.compose.AsyncImage
 
 @Composable
 fun ArticleCardItem(
-    articleId: Long,
+    articleId: Int,
     imageUrl: String,
     title: String,
     body: String,
     views: Int,
     modifier: Modifier = Modifier,
-    onItemClicked: (Long) -> Unit,
+    onItemClicked: (Int) -> Unit,
 ) {
     Surface(
         modifier = modifier

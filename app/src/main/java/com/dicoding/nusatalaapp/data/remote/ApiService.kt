@@ -1,9 +1,7 @@
 package com.dicoding.nusatalaapp.data.remote
 
-import com.dicoding.nusatalaapp.data.remote.dto.UserDTO
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import com.dicoding.nusatalaapp.data.remote.dto.*
+import retrofit2.http.*
 
 interface ApiService {
     @POST("users/login")
@@ -20,6 +18,27 @@ interface ApiService {
         @Field("username") username: String,
         @Field("email") email: String,
         @Field("password") password: String,
-        @Field("photo") photo: String
     ): UserDTO
+
+    @GET("articles")
+    suspend fun getArticles(
+        @Header("Authorization") token: String,
+    ): List<ArticleDTO>
+
+    @GET("articles/{id}")
+    suspend fun getArticleById(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int
+    ): ArticleDTO
+
+    @GET("images")
+    suspend fun getImages(
+        @Header("Authorization") token: String,
+    ): List<ImageDTO>
+
+    @GET("images/{id}")
+    suspend fun getImageById(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int,
+    ): ImageDTO
 }
