@@ -16,18 +16,20 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.dicoding.nusatalaapp.presentation.ui.theme.ArticleTypography
 
 
 @Composable
 fun TopFiveArticleCard(
-    articleId: Long,
+    articleId: Int,
     imageUrl: String,
     title: String,
     modifier: Modifier = Modifier,
-    onItemClicked: (Long) -> Unit,
+    onItemClicked: (Int) -> Unit,
 ) {
     Surface(
         modifier = modifier
@@ -41,7 +43,7 @@ fun TopFiveArticleCard(
         elevation = 4.dp,
     ) {
         Box(
-            modifier = modifier.clickable {  }
+            modifier = modifier.clickable { onItemClicked(articleId) }
         ) {
             AsyncImage(
                 model = imageUrl,
@@ -54,14 +56,16 @@ fun TopFiveArticleCard(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.5f)) // Set the transparency level of the overlay
+                    .background(Color.Black.copy(alpha = 0.5f))
                     .padding(16.dp),
                 contentAlignment = Alignment.BottomStart
             ) {
                 Text(
                     text = title,
-                    style = TextStyle(color = Color.White, fontSize = 16.sp),
-                    modifier = Modifier.padding(bottom = 8.dp)
+                    style = ArticleTypography.h6,
+                    modifier = Modifier.padding(bottom = 8.dp),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         }

@@ -31,6 +31,16 @@ interface ApiService {
         @Path("id") id: Int
     ): ArticleDTO
 
+    @GET("articles/popularity")
+    suspend fun getArticlesByViews(
+        @Header("Authorization") token: String,
+    ): List<ArticleDTO>
+
+    @GET("articles/new")
+    suspend fun getLatestArticles(
+        @Header("Authorization") token: String,
+    ): List<ArticleDTO>
+
     @GET("images")
     suspend fun getImages(
         @Header("Authorization") token: String,

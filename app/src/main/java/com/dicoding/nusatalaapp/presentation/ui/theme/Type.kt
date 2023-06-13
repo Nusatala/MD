@@ -54,3 +54,33 @@ val InfoTypography = Typography(
         color = Color.Red
     )
 )
+
+val ProfileTypography = Typography(
+    h6 = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = Typography.h6.fontWeight,
+        fontSize = Typography.h6.fontSize,
+        color = Color.White
+    ),
+)
+
+val ArticleTypography = Typography(
+    subtitle1 = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = Typography.h6.fontWeight,
+        fontSize = Typography.subtitle1.fontSize,
+        color = Orange700
+    ),
+    body1 = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = Typography.body1.fontWeight,
+        fontSize = Typography.body1.fontSize,
+        color = Color.Gray
+    ),
+    h6 = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = Typography.h6.fontWeight,
+        fontSize = Typography.h6.fontSize,
+        color = Color.White
+    )
+)

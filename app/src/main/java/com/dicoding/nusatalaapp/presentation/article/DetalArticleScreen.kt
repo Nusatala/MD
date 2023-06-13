@@ -30,11 +30,11 @@ fun DetailArticleScreen(
         topBar = {
             Surface(
                 color = Color.Transparent,
-                elevation = 0.dp, // Remove shadow
+                elevation = 0.dp,
                 contentColor = Color.White,
                 modifier = modifier.padding(vertical = 8.dp)
             ) {
-                TopAppBarBase(title = "Detail Article", onBackClicked = {})
+                TopAppBarBase(title = "Detail Article", filled = true,onBackClicked = {})
             }
         }
     ) {
