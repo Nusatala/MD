@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dicoding.nusatalaapp.common.Result
 import com.dicoding.nusatalaapp.domain.model.User
-import com.dicoding.nusatalaapp.domain.use_case.articles.get_article_by_id.GetArticleByIdUseCase
+import com.dicoding.nusatalaapp.domain.use_case.articles.get_articles.GetArticlesUseCase
 import com.dicoding.nusatalaapp.domain.use_case.read_user_session.ReadUserSessionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,22 +17,25 @@ import java.net.SocketException
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailArticleViewModel @Inject constructor(
+class ArticleViewModel @Inject constructor(
+    private val getArticles: GetArticlesUseCase,
     private val readUserSessionUseCase: ReadUserSessionUseCase,
-    private val getArticleByIdUseCase: GetArticleByIdUseCase,
 ) : ViewModel() {
-    private val _state: MutableStateFlow<DetailArticleState> =
-        MutableStateFlow(DetailArticleState())
-    val state: StateFlow<DetailArticleState> = _state.asStateFlow()
+    private val _state: MutableStateFlow<ArticleState> = MutableStateFlow(ArticleState())
+    val state: StateFlow<ArticleState> = _state.asStateFlow()
 
     private val _user: MutableStateFlow<User> = MutableStateFlow(User())
     val user: StateFlow<User> = _user.asStateFlow()
 
-    fun getArticleById(id: Int) {
+    init {
+        fetchData()
+    }
+
+    fun fetchData() {
         viewModelScope.launch {
             var token = ""
 
-            _state.value = DetailArticleState(isLoading = true)
+            _state.value = ArticleState(isLoading = true)
 
             readUserSessionUseCase().collect { user ->
                 if (user.token?.isNotBlank() == true) {
@@ -49,30 +52,27 @@ class DetailArticleViewModel @Inject constructor(
                 }
 
                 try {
-                    getArticleByIdUseCase(token, id).collect { result ->
+                    val articles = getArticles(token)
+                    articles.collect { result ->
                         when (result) {
                             is Result.Loading -> {
-                                _state.value = DetailArticleState(isLoading = true)
+                                _state.value = ArticleState(isLoading = true)
                             }
                             is Result.Success -> {
-                                _state.value =
-                                    DetailArticleState(article = result.data, isLoading = false)
+                                _state.value = ArticleState(isLoading = false, articles = result.data)
                             }
                             is Result.Error -> {
-                                _state.value =
-                                    DetailArticleState(error = result.error, isLoading = true)
+                                _state.value = ArticleState(isLoading = true, error = result.error)
                             }
                         }
                     }
                 } catch (exception: HttpException) {
                     _state.value =
-                        DetailArticleState(error = exception.message.toString(), isLoading = true)
+                        ArticleState(isLoading = true, error = exception.message.toString())
                 } catch (exception: SocketException) {
-                    _state.value =
-                        DetailArticleState(error = exception.message.toString(), isLoading = true)
+                    _state.value = ArticleState(isLoading = true, error = exception.message.toString())
                 } catch (exception: IOException) {
-                    _state.value =
-                        DetailArticleState(error = exception.message.toString(), isLoading = true)
+                    _state.value = ArticleState(isLoading = true, error = exception.message.toString())
                 }
             }
         }

@@ -19,29 +19,29 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.size.Size
+import com.dicoding.nusatalaapp.presentation.shimmer.ShimmerDetailArticle
 import com.dicoding.nusatalaapp.presentation.ui.components.TopAppBarBase
 import com.dicoding.nusatalaapp.presentation.ui.theme.ArticleTypography
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun DetailArticleScreen(
-    articleId: Int,
     modifier: Modifier = Modifier,
+    articleId: Int,
     viewModel: DetailArticleViewModel = hiltViewModel(),
+    navigateBack: () -> Unit,
 ) {
     val state = viewModel.state.collectAsState()
 
     viewModel.getArticleById(articleId)
     Scaffold(
         topBar = {
-            TopAppBarBase(title = "Detail Article", filled = true, onBackClicked = {})
+            TopAppBarBase(title = "Detail Article", filled = true, onBackClicked = navigateBack)
         }
     ) {
-        LaunchedEffect(state.value.article?.id) {
-            Log.d("userLogin", state.value.article?.title.toString())
-        }
-
-        if (state.value.article?.id != null) {
+        if (state.value.isLoading) {
+            ShimmerDetailArticle(isLoading = state.value.isLoading)
+        } else
             if (state.value.article?.id != null) {
                 val article = state.value.article
                 DetailArticleContent(
@@ -51,7 +51,6 @@ fun DetailArticleScreen(
                     sources = article?.sources ?: ""
                 )
             }
-        }
     }
 }
 
