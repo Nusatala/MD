@@ -10,6 +10,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun TopAppBarBase(
     title: String,
+    filled: Boolean = false,
     onBackClicked: () -> Unit,
 ) {
     TopAppBar(
@@ -19,8 +20,8 @@ fun TopAppBarBase(
                 Icon(Icons.Default.ArrowBack, contentDescription = "Back")
             }
         },
-        backgroundColor = Color.Transparent,
-        contentColor = MaterialTheme.colors.primary,
+        backgroundColor = if (filled) MaterialTheme.colors.primary else Color.Transparent,
+        contentColor = if (filled) MaterialTheme.colors.onPrimary else MaterialTheme.colors.primary,
         elevation = 0.dp
     )
 }

@@ -1,7 +1,7 @@
 package com.dicoding.nusatalaapp.presentation.home
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,31 +10,39 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
-import com.dicoding.nusatalaapp.R
-import com.dicoding.nusatalaapp.domain.model.Article
+import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
+import com.dicoding.nusatalaapp.presentation.shimmer.ShimmerArticleCardItem
+import com.dicoding.nusatalaapp.presentation.shimmer.ShimmerArticleListItem
 import com.dicoding.nusatalaapp.presentation.ui.components.ArticleCardItem
 import com.dicoding.nusatalaapp.presentation.ui.components.SearchBarBase
 import com.dicoding.nusatalaapp.presentation.ui.components.TopFiveArticleCard
 import com.dicoding.nusatalaapp.presentation.ui.theme.InfoTypography
+import com.dicoding.nusatalaapp.presentation.ui.theme.ProfileTypography
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = hiltViewModel(),
+    onArticleCardItemClicked: (Int) -> Unit,
+    onArticleListItemClicked: (Int) -> Unit,
+    navigateToArticleScreen: () -> Unit,
 ) {
 
     val systemUiController = rememberSystemUiController()
     systemUiController.setStatusBarColor(color = MaterialTheme.colors.primary)
+
+    val state = viewModel.state.collectAsState()
+    val user = viewModel.user.collectAsState()
 
     Scaffold(
         modifier = modifier.fillMaxSize()
@@ -58,12 +66,12 @@ fun HomeScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Column(modifier = modifier) {
-                            Text(text = "Selamat Pagi")
-                            Text(text = "John Doe")
+                            Text(text = "Selamat datang,", style = ProfileTypography.h6)
+                            Text(text = user.value.name ?: "", style = ProfileTypography.h6)
                         }
-                        Image(
-                            painter = painterResource(id = R.drawable.pohoto_profile),
-                            contentDescription = "profilie",
+                        AsyncImage(
+                            model = user.value.photo,
+                            contentDescription = "profile",
                             modifier = modifier
                                 .sizeIn(
                                     minWidth = 64.dp,
@@ -96,14 +104,20 @@ fun HomeScreen(
                     contentPadding = PaddingValues(16.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-//                    items(articles, key = { it.id }) {
-//                        TopFiveArticleCard(
-//                            articleId = it.id,
-//                            imageUrl = it.imageUrl,
-//                            title = it.title,
-//                            onItemClicked = {}
-//                        )
-//                    }
+                    if (state.value.isLoading) {
+                        items(5) {
+                            ShimmerArticleCardItem(isLoading = state.value.isLoading)
+                        }
+                    } else {
+                        items(state.value.latestArticles, key = { it.id ?: -1 }) { article ->
+                            TopFiveArticleCard(
+                                articleId = article.id ?: -1,
+                                imageUrl = article.image?.image ?: "",
+                                title = article.title ?: "",
+                                onItemClicked = onArticleCardItemClicked
+                            )
+                        }
+                    }
                 }
                 Row(
                     modifier = modifier
@@ -112,24 +126,32 @@ fun HomeScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text(text = "Untuk Kamu")
-                    SmallButtonBase(text = "Show more", onClick = {})
+                    Text(text = "Artikel")
+                    SmallButtonBase(text = "Selebihnya", onClick = navigateToArticleScreen)
                 }
                 LazyColumn(
                     contentPadding = PaddingValues(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = modifier.padding(bottom = 56.dp)
                 ) {
-//                    items(articles, key = { it.id }) {
-//                        ArticleCardItem(
-//                            articleId = it.id,
-//                            imageUrl = it.imageUrl,
-//                            title = it.title,
-//                            body = it.body,
-//                            views = it.views,
-//                            onItemClicked = {}
-//                        )
-//                    }
+                    if (state.value.isLoading) {
+                        items(5) {
+                            ShimmerArticleListItem(isLoading = state.value.isLoading)
+                        }
+                    } else {
+                        items(state.value.articles, key = { it.id ?: -1 }) { article ->
+                            article.let {
+                                ArticleCardItem(
+                                    articleId = it.id ?: -1,
+                                    imageUrl = it.image?.image ?: "",
+                                    title = it.title ?: "",
+                                    body = it.body ?: "",
+                                    views = it.views ?: -1,
+                                    onItemClicked = onArticleListItemClicked
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -160,5 +182,5 @@ fun SmallButtonBase(
 @Preview(showBackground = true)
 @Composable
 fun PreviewHomeScreen() {
-    HomeScreen()
+//    HomeScreen({})
 }

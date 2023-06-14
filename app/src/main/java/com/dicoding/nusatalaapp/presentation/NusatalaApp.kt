@@ -1,6 +1,7 @@
 package com.dicoding.nusatalaapp.presentation
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
@@ -49,7 +50,8 @@ fun NusatalaApp(
                     Screen.Welcome.route,
                     Screen.Login.route,
                     Screen.Register.route,
-                    Screen.Article.route
+                    Screen.Article.route,
+                    Screen.Articles.route
             )) {
                 BottomNav(navController = navController)
             }
@@ -64,7 +66,18 @@ fun NusatalaApp(
             }
 
             composable(route = Screen.Home.route) {
-                HomeScreen()
+                HomeScreen(
+                    onArticleCardItemClicked = { articleId ->
+                        navController.navigate(Screen.Article.createRoute(articleId))
+                    },
+                    onArticleListItemClicked = { articleId ->
+                        navController.navigate(Screen.Article.createRoute(articleId))
+
+                    },
+                    navigateToArticleScreen = {
+                        navController.navigate(Screen.Articles.route)
+                    }
+                )
             }
 
             composable(route = Screen.Splash.route) {
@@ -88,11 +101,12 @@ fun NusatalaApp(
             composable(
                 route = Screen.Article.route,
                 arguments = listOf(navArgument("articleId") {
-                    type = NavType.LongType
+                    type = NavType.IntType
                 })
             ) {
-                val articleId = it.arguments?.getLong("articleId") ?: -1L
-                DetailArticleScreen(imageUrl = "", title = articleId.toString(), body = "")
+                val articleId = it.arguments?.getInt("articleId") ?: -1
+                Log.d("userLogin", articleId.toString())
+                DetailArticleScreen(articleId = articleId)
             }
 
             composable(

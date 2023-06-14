@@ -1,5 +1,6 @@
 package com.dicoding.nusatalaapp.data.repository
 
+import android.util.Log
 import com.dicoding.nusatalaapp.common.Result
 import com.dicoding.nusatalaapp.data.remote.ApiService
 import com.dicoding.nusatalaapp.data.remote.dto.toModel
@@ -19,6 +20,7 @@ class AuthRepositoryImpl @Inject constructor(
             val response = apiService.login(username, password).toModel()
             emit(Result.Success(data = response))
         } catch (exception: HttpException) {
+            Log.d("userLogin", exception.message.toString())
             emit(Result.Error("Invalid Credentilas"))
         }
     }

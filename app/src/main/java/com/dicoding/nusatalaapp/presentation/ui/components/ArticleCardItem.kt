@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.dicoding.nusatalaapp.presentation.ui.theme.ArticleTypography
 
 @Composable
 fun ArticleCardItem(
@@ -54,12 +55,16 @@ fun ArticleCardItem(
             ) {
                 Text(
                     text = title,
-                    modifier = modifier.weight(1f)
+                    modifier = modifier.weight(1f),
+                    style = ArticleTypography.subtitle1,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
                 Text(
                     text = body,
                     modifier = modifier.weight(2f),
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    style = ArticleTypography.body1
                 )
                 Row(
                     modifier = modifier
