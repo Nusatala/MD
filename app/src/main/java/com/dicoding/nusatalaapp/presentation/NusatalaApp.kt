@@ -2,8 +2,6 @@ package com.dicoding.nusatalaapp.presentation
 
 import android.annotation.SuppressLint
 import android.util.Log
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -23,6 +21,8 @@ import com.dicoding.nusatalaapp.presentation.account.AccountScreen
 import com.dicoding.nusatalaapp.presentation.account.EditAccountScreen
 import com.dicoding.nusatalaapp.presentation.article.ArticleScreen
 import com.dicoding.nusatalaapp.presentation.article.DetailArticleScreen
+import com.dicoding.nusatalaapp.presentation.auth.login.LoginScreen
+import com.dicoding.nusatalaapp.presentation.auth.register.RegisterScreen
 import com.dicoding.nusatalaapp.presentation.faq.FaqScreen
 import com.dicoding.nusatalaapp.presentation.home.HomeScreen
 import com.dicoding.nusatalaapp.presentation.navigation.NavigationItem
@@ -32,8 +32,6 @@ import com.dicoding.nusatalaapp.presentation.quiz.QuizScreen
 import com.dicoding.nusatalaapp.presentation.setting.SettingScreen
 import com.dicoding.nusatalaapp.presentation.splash.SplashScreen
 import com.dicoding.nusatalaapp.presentation.splash.onboarding.WelcomeScreen
-import com.dicoding.nusatalaapp.presentation.auth.login.LoginScreen
-import com.dicoding.nusatalaapp.presentation.auth.register.RegisterScreen
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -52,7 +50,8 @@ fun NusatalaApp(
                     Screen.Register.route,
                     Screen.Article.route,
                     Screen.Articles.route
-            )) {
+                )
+            ) {
                 BottomNav(navController = navController)
             }
         }
@@ -93,9 +92,14 @@ fun NusatalaApp(
             }
 
             composable(route = Screen.Articles.route) {
-                ArticleScreen(navigateToDetail = { articleId ->
-                    navController.navigate(Screen.Article.createRoute(articleId))
-                })
+                ArticleScreen(
+                    navigateToDetail = { articleId ->
+                        navController.navigate(Screen.Article.createRoute(articleId))
+                    },
+                    navigateBack = {
+                        navController.popBackStack()
+                    }
+                )
             }
 
             composable(
@@ -106,7 +110,12 @@ fun NusatalaApp(
             ) {
                 val articleId = it.arguments?.getInt("articleId") ?: -1
                 Log.d("userLogin", articleId.toString())
-                DetailArticleScreen(articleId = articleId)
+                DetailArticleScreen(
+                    articleId = articleId,
+                    navigateBack = {
+                        navController.popBackStack()
+                    }
+                )
             }
 
             composable(
