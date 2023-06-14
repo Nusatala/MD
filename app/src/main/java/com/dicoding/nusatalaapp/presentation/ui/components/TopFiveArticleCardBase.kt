@@ -32,7 +32,7 @@ fun TopFiveArticleCard(
     onItemClicked: (Int) -> Unit,
 ) {
     Surface(
-        modifier = modifier
+        modifier = Modifier
             .sizeIn(
                 minWidth = 250.dp,
                 maxWidth = 250.dp,
@@ -43,7 +43,7 @@ fun TopFiveArticleCard(
         elevation = 4.dp,
     ) {
         Box(
-            modifier = modifier.clickable { onItemClicked(articleId) }
+            modifier = Modifier.clickable { onItemClicked(articleId) }
         ) {
             AsyncImage(
                 model = imageUrl,

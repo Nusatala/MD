@@ -48,5 +48,6 @@ fun ArticleDTO.toModel(): Article {
         body = history,
         image = image?.toModel(),
         views = views,
+        sources = sources
     )
 }

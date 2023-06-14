@@ -1,5 +1,6 @@
 package com.dicoding.nusatalaapp.data.repository
 
+import android.util.Log
 import com.dicoding.nusatalaapp.common.Result
 import com.dicoding.nusatalaapp.data.remote.ApiService
 import com.dicoding.nusatalaapp.data.remote.dto.toModel

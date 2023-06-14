@@ -82,5 +82,24 @@ val ArticleTypography = Typography(
         fontWeight = Typography.h6.fontWeight,
         fontSize = Typography.h6.fontSize,
         color = Color.White
+    ),
+    subtitle2 = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = Typography.h3.fontWeight,
+        fontSize = Typography.h3.fontSize,
+        color = Orange700
+    ),
+    body2 = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = Typography.body1.fontWeight,
+        fontSize = Typography.body1.fontSize,
+        color = Color.Gray,
+        lineHeight = 24.sp
+    ),
+    caption = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = Typography.caption.fontWeight,
+        fontSize = 14.sp,
+        color = Color.Gray,
     )
 )

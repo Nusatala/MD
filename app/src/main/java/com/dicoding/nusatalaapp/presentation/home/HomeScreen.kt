@@ -2,7 +2,6 @@ package com.dicoding.nusatalaapp.presentation.home
 
 import android.annotation.SuppressLint
 import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,16 +14,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
-import com.dicoding.nusatalaapp.R
-import com.dicoding.nusatalaapp.domain.model.Article
 import com.dicoding.nusatalaapp.presentation.shimmer.ShimmerArticleCardItem
 import com.dicoding.nusatalaapp.presentation.shimmer.ShimmerArticleListItem
 import com.dicoding.nusatalaapp.presentation.ui.components.ArticleCardItem
@@ -39,6 +33,9 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
+    onArticleCardItemClicked: (Int) -> Unit,
+    onArticleListItemClicked: (Int) -> Unit,
+    navigateToArticleScreen: () -> Unit,
 ) {
 
     val systemUiController = rememberSystemUiController()
@@ -113,14 +110,12 @@ fun HomeScreen(
                         }
                     } else {
                         items(state.value.latestArticles, key = { it.id ?: -1 }) { article ->
-                            article.let {
-                                TopFiveArticleCard(
-                                    articleId = it.id ?: -1,
-                                    imageUrl = it.image?.image ?: "",
-                                    title = it.title ?: "",
-                                    onItemClicked = {}
-                                )
-                            }
+                            TopFiveArticleCard(
+                                articleId = article.id ?: -1,
+                                imageUrl = article.image?.image ?: "",
+                                title = article.title ?: "",
+                                onItemClicked = onArticleCardItemClicked
+                            )
                         }
                     }
                 }
@@ -132,7 +127,7 @@ fun HomeScreen(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(text = "Artikel")
-                    SmallButtonBase(text = "Show more", onClick = {})
+                    SmallButtonBase(text = "Selebihnya", onClick = navigateToArticleScreen)
                 }
                 LazyColumn(
                     contentPadding = PaddingValues(16.dp),
@@ -152,7 +147,7 @@ fun HomeScreen(
                                     title = it.title ?: "",
                                     body = it.body ?: "",
                                     views = it.views ?: -1,
-                                    onItemClicked = {}
+                                    onItemClicked = onArticleListItemClicked
                                 )
                             }
                         }
@@ -187,5 +182,5 @@ fun SmallButtonBase(
 @Preview(showBackground = true)
 @Composable
 fun PreviewHomeScreen() {
-    HomeScreen()
+//    HomeScreen({})
 }
