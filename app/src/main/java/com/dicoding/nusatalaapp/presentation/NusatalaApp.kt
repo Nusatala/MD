@@ -27,6 +27,7 @@ import com.dicoding.nusatalaapp.presentation.faq.FaqScreen
 import com.dicoding.nusatalaapp.presentation.home.HomeScreen
 import com.dicoding.nusatalaapp.presentation.navigation.NavigationItem
 import com.dicoding.nusatalaapp.presentation.navigation.Screen
+import com.dicoding.nusatalaapp.presentation.product.ProductScreen
 import com.dicoding.nusatalaapp.presentation.quiz.QuizDetailScreen
 import com.dicoding.nusatalaapp.presentation.quiz.QuizScreen
 import com.dicoding.nusatalaapp.presentation.setting.SettingScreen
@@ -188,6 +189,12 @@ fun NusatalaApp(
                     forthAnswer = "tolong ya",
                 )
             }
+
+            composable(route = Screen.Store.route) {
+                ProductScreen(navigateToDetail = { id ->
+                    navController.navigate(Screen.DetailStore.createRoute(id))
+                })
+            }
         }
     }
 }
@@ -212,7 +219,7 @@ fun BottomNav(
             NavigationItem(
                 title = "Toko",
                 icon = Icons.Default.ShoppingCart,
-                screen = Screen.Cart
+                screen = Screen.Store
             ),
             NavigationItem(
                 title = "Scan",

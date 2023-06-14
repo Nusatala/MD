@@ -5,9 +5,11 @@ import com.dicoding.nusatalaapp.data.remote.ApiConfig
 import com.dicoding.nusatalaapp.data.remote.ApiService
 import com.dicoding.nusatalaapp.data.repository.ArticleRepositoryImpl
 import com.dicoding.nusatalaapp.data.repository.AuthRepositoryImpl
+import com.dicoding.nusatalaapp.data.repository.ProductRepositoryImpl
 import com.dicoding.nusatalaapp.data.repository.UserPrefRepositoryImpl
 import com.dicoding.nusatalaapp.domain.repository.ArticleRepository
 import com.dicoding.nusatalaapp.domain.repository.AuthRepository
+import com.dicoding.nusatalaapp.domain.repository.ProductRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -43,5 +45,13 @@ object AppModule {
         apiService: ApiService
     ): ArticleRepository {
         return ArticleRepositoryImpl(apiService)
+    }
+
+    @Provides
+    @Singleton
+    fun provideProductRepository(
+        apiService: ApiService
+    ): ProductRepository {
+        return ProductRepositoryImpl(apiService)
     }
 }

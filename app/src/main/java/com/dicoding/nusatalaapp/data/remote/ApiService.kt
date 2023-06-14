@@ -51,4 +51,15 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("id") id: Int,
     ): ImageDTO
+
+    @GET("products")
+    suspend fun getProducts(
+        @Header("Authorization") token: String,
+    ): List<ProductDTO>
+
+    @GET("products/{id}")
+    suspend fun getProductById(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int
+    ): ProductDTO
 }
