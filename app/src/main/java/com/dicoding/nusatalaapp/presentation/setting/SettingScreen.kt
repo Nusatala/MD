@@ -26,11 +26,12 @@ import com.dicoding.nusatalaapp.R
 @Composable
 fun SettingScreen(
     modifier: Modifier = Modifier,
+    navigateBack: () -> Unit,
 ) {
     Scaffold(
         modifier = modifier,
         topBar = {
-            TopAppBarBase(title = "Setting", onBackClicked = {})
+            TopAppBarBase(title = "Setting", filled = true, onBackClicked = navigateBack)
         },
     ) {
         Column(

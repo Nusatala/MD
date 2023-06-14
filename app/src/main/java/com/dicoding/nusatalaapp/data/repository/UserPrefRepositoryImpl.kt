@@ -17,7 +17,6 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "us
 class UserPrefRepositoryImpl(
     context: Context
 ) : UserPrefRepository {
-
     private val dataStore = context.dataStore
 
     override suspend fun saveUserSession(userModel: User) {
@@ -53,8 +52,6 @@ class UserPrefRepositoryImpl(
     }
 
     override fun readUserSession(): Flow<User> {
-
-        Log.d("userLogin", "usr session save repos exec")
         return dataStore.data
             .catch { e ->
                 if (e is IOException) {
@@ -78,7 +75,19 @@ class UserPrefRepositoryImpl(
     }
 
     override suspend fun destroyUserSession(): Boolean {
-        return true
+        return try {
+            dataStore.edit { pref ->
+                pref.remove(idKey)
+                pref.remove(usernameKey)
+                pref.remove(emailKey)
+                pref.remove(nameKey)
+                pref.remove(photoKey)
+                pref.remove(tokenKey)
+            }
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
 
     companion object {

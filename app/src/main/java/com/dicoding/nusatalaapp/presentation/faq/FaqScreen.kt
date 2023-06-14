@@ -25,34 +25,27 @@ import com.dicoding.nusatalaapp.presentation.ui.components.TopAppBarBase
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun FaqScreen(
+    navigateBack: () -> Unit,
 ) {
     val faqs = listOf(
         Faq(
-            question = "What is the purpose of this app?",
-            answer = "The purpose of this app is to provide users with a seamless and intuitive user experience while offering a wide range of features and functionalities."
+            question = "Apa itu Nusatala?",
+            answer = "Nusatala adalah sebuah aplikasi yang dapat mendeteksi gambar alat musik tradisional menggunakan teknologi image recognition."
         ),
         Faq(
-            question = "How can I create an account?",
-            answer = "To create an account, navigate to the app's homepage and click on the 'Sign Up' button. Fill in the required information, such as your name, email address, and password, and then click 'Create Account' to complete the registration process."
+            question = "Bagaimana cara menggunakan Nusatala?",
+            answer = "Unduh dan instal aplikasi Nusatala, lalu buka aplikasi tersebut. Ambil gambar alat musik tradisional Indonesia, dan aplikasi akan memberikan informasi terkait alat musik tersebut."
         ),
         Faq(
-            question = "Can I change my password?",
-            answer = "Yes, you can change your password by accessing the 'Account Settings' section in the app. From there, you can update your password by providing your current password and entering a new password of your choice."
-        ),
-        Faq(
-            question = "Are there any subscription plans available?",
-            answer = "Yes, we offer a variety of subscription plans tailored to meet different user needs. Our plans include a range of features and benefits, such as ad-free browsing, exclusive content, and priority customer support. You can choose a subscription plan that best fits your requirements."
-        ),
-        Faq(
-            question = "How can I contact customer support?",
-            answer = "For any questions, concerns, or assistance, you can contact our customer support team through our dedicated helpline at +123456789 or send us an email at support@example.com. Our support representatives are available to assist you during our business hours from Monday to Friday."
+            question = "Apakah Aplikasi Nusatala mencakup semua alat musik tradisional Indonesia?",
+            answer = "Untuk saat ini, Nusatala hanya dapat mengenali beberapa alat musik tradisional saja. Tim pengembang terus berupaya untuk memperluas database alat musik tradisional yang terdaftar dalam aplikasi agar mencakup lebih banyak jenis alat musik di masa mendatang."
         )
     )
 
     Scaffold(
         modifier = Modifier,
         topBar = {
-            TopAppBarBase(title = "Frequently Asked Question", onBackClicked = {})
+            TopAppBarBase(title = "Frequently Asked Question", filled = true, onBackClicked = navigateBack)
         },
     ) {
         Column(
@@ -111,7 +104,7 @@ fun FaqCardItem(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = question)
+                Text(text = question, modifier = Modifier.weight(1f))
                 IconButton(
                     onClick = { expanded = !expanded },
                 ) {

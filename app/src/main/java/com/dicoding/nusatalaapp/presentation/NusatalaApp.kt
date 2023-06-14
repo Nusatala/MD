@@ -49,7 +49,9 @@ fun NusatalaApp(
                     Screen.Login.route,
                     Screen.Register.route,
                     Screen.Article.route,
-                    Screen.Articles.route
+                    Screen.Articles.route,
+                    Screen.Faq.route,
+                    Screen.Setting.route,
                 )
             ) {
                 BottomNav(navController = navController)
@@ -109,7 +111,6 @@ fun NusatalaApp(
                 })
             ) {
                 val articleId = it.arguments?.getInt("articleId") ?: -1
-                Log.d("userLogin", articleId.toString())
                 DetailArticleScreen(
                     articleId = articleId,
                     navigateBack = {
@@ -134,26 +135,41 @@ fun NusatalaApp(
 
             composable(route = Screen.Account.route) {
                 AccountScreen(
-                    imageUrl = "https://assets.ayobandung.com/crop/0x0:0x0/750x500/webp/photo/2022/10/15/3563646264.png",
-                    name = "Dokter tirta",
-                    email = "emailanjas@mail.com"
+                    navigateToSetting = {
+                        navController.navigate(Screen.Setting.route)
+                    },
+                    navigateToFaq = {
+                        navController.navigate(Screen.Faq.route)
+                    },
+                    onSuccessLogout = {
+                        navController.navigate(Screen.Login.route) {
+                            popUpTo(Screen.Login.route) {
+                                inclusive = true
+                            }
+                            launchSingleTop = true
+                        }
+                    }
                 )
             }
 
             composable(route = Screen.DetailAccount.route) {
                 EditAccountScreen(
                     imageUrl = "https://assets.ayobandung.com/crop/0x0:0x0/750x500/webp/photo/2022/10/15/3563646264.png",
-                    name = "Dokter tirta",
+                    name = "Iqbal",
                     email = "emailanjas@mail.com"
                 )
             }
 
             composable(route = Screen.Setting.route) {
-                SettingScreen()
+                SettingScreen(navigateBack = {
+                    navController.popBackStack()
+                })
             }
 
             composable(route = Screen.Faq.route) {
-                FaqScreen()
+                FaqScreen(navigateBack = {
+                    navController.popBackStack()
+                })
             }
 
             composable(
