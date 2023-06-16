@@ -1,6 +1,8 @@
 package com.dicoding.nusatalaapp.data.remote.dto
 
 import com.dicoding.nusatalaapp.domain.model.Article
+import com.dicoding.nusatalaapp.domain.model.Image
+import com.dicoding.nusatalaapp.domain.model.ScanResult
 import com.google.gson.annotations.SerializedName
 
 data class ArticleDTO(
@@ -51,3 +53,16 @@ fun ArticleDTO.toModel(): Article {
         sources = sources
     )
 }
+
+fun ArticleDTO.toScanModel(): ScanResult {
+    return ScanResult(
+        id = id ?: -1,
+        name = title ?: "",
+        body = history ?: "",
+        image = image?.toModel() ?: Image(),
+        views = views ?: -1,
+        materials = bahanPembuatan ?: "",
+        regionalOrigin = asalDaerah ?: "",
+    )
+}
+

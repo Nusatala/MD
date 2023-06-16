@@ -1,6 +1,7 @@
 package com.dicoding.nusatalaapp.data.remote
 
 import com.dicoding.nusatalaapp.data.remote.dto.*
+import okhttp3.MultipartBody
 import retrofit2.http.*
 
 interface ApiService {
@@ -41,6 +42,12 @@ interface ApiService {
         @Header("Authorization") token: String,
     ): List<ArticleDTO>
 
+    @GET("articles/label/{labelId}")
+    suspend fun getArticleByLabelId(
+        @Header("Authorization") token: String,
+        @Path("labelId") labelId: Int
+    ): ArticleDTO
+
     @GET("images")
     suspend fun getImages(
         @Header("Authorization") token: String,
@@ -51,4 +58,34 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("id") id: Int,
     ): ImageDTO
+
+    @GET("products")
+    suspend fun getProducts(
+        @Header("Authorization") token: String,
+    ): List<ProductDTO>
+
+    @GET("products/{id}")
+    suspend fun getProductById(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int
+    ): ProductDTO
+
+    @GET("products/label/{id}")
+    suspend fun getProductsByLabel(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int
+    ): List<ProductDTO>
+
+    @Multipart
+    @POST("images/scan")
+    suspend fun scan(
+        @Header("Authorization") token: String,
+        @Part file:MultipartBody.Part
+    ): ScanDTO
+
+    @GET("tutorials/label/{id}")
+    suspend fun getTutorialByLabel(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int
+    ): TutorialDTO
 }

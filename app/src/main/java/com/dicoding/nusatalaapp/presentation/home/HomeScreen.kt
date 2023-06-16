@@ -1,7 +1,6 @@
 package com.dicoding.nusatalaapp.presentation.home
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -37,7 +36,6 @@ fun HomeScreen(
     onArticleListItemClicked: (Int) -> Unit,
     navigateToArticleScreen: () -> Unit,
 ) {
-
     val systemUiController = rememberSystemUiController()
     systemUiController.setStatusBarColor(color = MaterialTheme.colors.primary)
 

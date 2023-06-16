@@ -1,5 +1,7 @@
 package com.dicoding.nusatalaapp.presentation.navigation
 
+import android.net.Uri
+
 sealed class Screen(val route: String) {
     object Splash : Screen("splash")
     object Home : Screen("home")
@@ -11,7 +13,6 @@ sealed class Screen(val route: String) {
         fun createRoute(id: Int) = "articles/$id"
     }
     object Cart : Screen("cart")
-    object Camera : Screen("camera")
     object Quiz : Screen("quiz")
     object DetailQuiz : Screen("quiz/{levelId}") {
         fun createRoute(id: Long) = "quiz/$id"
@@ -22,4 +23,19 @@ sealed class Screen(val route: String) {
     }
     object Setting : Screen("setting")
     object Faq : Screen("faq")
+    object Store : Screen("store")
+    object DetailStore : Screen("store/{id}") {
+        fun createRoute(id: Int) = "store/$id"
+    }
+    object Scan : Screen("scan")
+    object ScanResult : Screen("scan/{uri}") {
+        fun createRoute(uri: Uri): String {
+            val encodedUri = Uri.encode(uri.toString())
+            return "scan/$encodedUri"
+        }
+    }
+
+    object ScanResultDetail : Screen("scan/{labelId}/detail") {
+        fun createRoute(labelId: Int) = "scan/$labelId/detail"
+    }
 }

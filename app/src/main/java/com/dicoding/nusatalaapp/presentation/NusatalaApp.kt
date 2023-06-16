@@ -1,6 +1,7 @@
 package com.dicoding.nusatalaapp.presentation
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.util.Log
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -27,8 +28,13 @@ import com.dicoding.nusatalaapp.presentation.faq.FaqScreen
 import com.dicoding.nusatalaapp.presentation.home.HomeScreen
 import com.dicoding.nusatalaapp.presentation.navigation.NavigationItem
 import com.dicoding.nusatalaapp.presentation.navigation.Screen
+import com.dicoding.nusatalaapp.presentation.product.DetailProductScreen
+import com.dicoding.nusatalaapp.presentation.product.ProductScreen
 import com.dicoding.nusatalaapp.presentation.quiz.QuizDetailScreen
 import com.dicoding.nusatalaapp.presentation.quiz.QuizScreen
+import com.dicoding.nusatalaapp.presentation.scan.ScanScreen
+import com.dicoding.nusatalaapp.presentation.scan.detail.DetailResultScreen
+import com.dicoding.nusatalaapp.presentation.scan.result.ScanResultScreen
 import com.dicoding.nusatalaapp.presentation.setting.SettingScreen
 import com.dicoding.nusatalaapp.presentation.splash.SplashScreen
 import com.dicoding.nusatalaapp.presentation.splash.onboarding.WelcomeScreen
@@ -52,6 +58,10 @@ fun NusatalaApp(
                     Screen.Articles.route,
                     Screen.Faq.route,
                     Screen.Setting.route,
+                    Screen.DetailStore.route,
+                    Screen.Scan.route,
+                    Screen.ScanResult.route,
+                    Screen.ScanResultDetail.route,
                 )
             ) {
                 BottomNav(navController = navController)
@@ -125,10 +135,6 @@ fun NusatalaApp(
                 Text(text = Screen.Cart.route)
             }
 
-            composable(route = Screen.Camera.route) {
-                Text(text = Screen.Camera.route)
-            }
-
             composable(route = Screen.Quiz.route) {
                 QuizScreen()
             }
@@ -188,6 +194,72 @@ fun NusatalaApp(
                     forthAnswer = "tolong ya",
                 )
             }
+
+            composable(route = Screen.Store.route) {
+                ProductScreen(navigateToDetail = { id ->
+                    navController.navigate(Screen.DetailStore.createRoute(id))
+                })
+            }
+
+            composable(
+                route = Screen.DetailStore.route,
+                arguments = listOf(
+                    navArgument("id") {
+                        type = NavType.IntType
+                    },
+                )
+            ) {
+                val id = it.arguments?.getInt("id") ?: -1
+                DetailProductScreen(
+                    id = id,
+                    navigateBack = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+
+            composable(route = Screen.Scan.route) {
+                ScanScreen(navigateToResult = { uri ->
+                    navController.navigate(Screen.ScanResult.createRoute(uri))
+                })
+            }
+
+            composable(
+                route = Screen.ScanResult.route,
+                arguments = listOf(
+                    navArgument("uri") {
+                        type = NavType.StringType
+                    },
+                )
+            ) {
+                val uri = it.arguments?.getString("uri") ?: ""
+                val capturedImageUri = Uri.parse(Uri.decode(uri))
+                ScanResultScreen(
+                    uri = capturedImageUri,
+                    navigateToDetail = { labelId ->
+                        navController.navigate(Screen.ScanResultDetail.createRoute(labelId))
+                    },
+                    cancelAction = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+
+            composable(
+                route = Screen.ScanResultDetail.route,
+                arguments = listOf(
+                    navArgument("labelId") {
+                        type = NavType.IntType
+                    },
+                )
+            ) {
+                val labelId = it.arguments?.getInt("labelId") ?: -1
+                DetailResultScreen(
+                    labelId = labelId,
+                    navigateBack = { navController.popBackStack() }
+                )
+            }
+
         }
     }
 }
@@ -212,12 +284,12 @@ fun BottomNav(
             NavigationItem(
                 title = "Toko",
                 icon = Icons.Default.ShoppingCart,
-                screen = Screen.Cart
+                screen = Screen.Store
             ),
             NavigationItem(
                 title = "Scan",
                 icon = Icons.Default.Camera,
-                screen = Screen.Camera
+                screen = Screen.Scan
             ),
             NavigationItem(
                 title = "Quiz",
