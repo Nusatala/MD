@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.dicoding.nusatalaapp.presentation.ui.components.SearchBarBase
+import com.dicoding.nusatalaapp.presentation.ui.theme.Orange700
 import com.dicoding.nusatalaapp.presentation.ui.theme.ProductTypography
 
 @Composable
@@ -108,17 +109,22 @@ fun ProductCardItem(
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(text = "Rp. $price", style = ProductTypography.body1)
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.BottomStart
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Star,
-                        contentDescription = "rating",
-                        tint = Color.Yellow
-                    )
-                    Text(text = rating.toString(), style = ProductTypography.caption)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Star,
+                            contentDescription = "rating",
+                            tint = Orange700
+                        )
+                        Text(text = rating.toString(), style = ProductTypography.body2)
+                    }
                 }
             }
         }

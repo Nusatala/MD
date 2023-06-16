@@ -10,6 +10,6 @@ class GetProductByIdUseCase @Inject constructor(
     private val productRepository: ProductRepository
 ){
     suspend operator fun invoke(token: String, id: Int): Flow<Result<Product>> {
-        return productRepository.getArticleById(token, id)
+        return productRepository.getProductById(token, id)
     }
 }

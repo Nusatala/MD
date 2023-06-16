@@ -4,7 +4,9 @@ import android.util.Log
 import com.dicoding.nusatalaapp.common.Result
 import com.dicoding.nusatalaapp.data.remote.ApiService
 import com.dicoding.nusatalaapp.data.remote.dto.toModel
+import com.dicoding.nusatalaapp.data.remote.dto.toScanModel
 import com.dicoding.nusatalaapp.domain.model.Article
+import com.dicoding.nusatalaapp.domain.model.ScanResult
 import com.dicoding.nusatalaapp.domain.repository.ArticleRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -48,6 +50,16 @@ class ArticleRepositoryImpl @Inject constructor(
         try {
             emit(Result.Loading)
             val response = apiService.getLatestArticles(token).map { it.toModel() }
+            emit(Result.Success(response))
+        } catch (exception: HttpException) {
+            emit(Result.Error(exception.message.toString()))
+        }
+    }
+
+    override suspend fun getArticleByLabelId(token: String, labelId: Int): Flow<Result<ScanResult>> = flow {
+        try {
+            emit(Result.Loading)
+            val response = apiService.getArticleByLabelId(token, labelId).toScanModel()
             emit(Result.Success(response))
         } catch (exception: HttpException) {
             emit(Result.Error(exception.message.toString()))

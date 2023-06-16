@@ -117,6 +117,12 @@ val ProductTypography = Typography(
         fontSize = Typography.body1.fontSize,
         color = Color.Gray
     ),
+    body2 = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = Typography.body2.fontWeight,
+        fontSize = Typography.body2.fontSize,
+        color = Orange700
+    )
 
 )
 
